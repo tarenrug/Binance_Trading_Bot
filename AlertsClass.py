@@ -12,7 +12,7 @@ class Alerts:
 
     def Buy(self):
         variablebuy=1
-        if self.RSI <= 90 and self.StochRSIK <= 90 and self.MoneyFlow <= 90:
+        if self.RSI <= 20 and self.StochRSIK <= 20 and self.MoneyFlow <= 20:
             print("There is an BUY Signal with {v1} on the {v2} chart.".format(v1=self.TradingPair,v2=self.TimeFrame))
         else:
             #print("There are no buy signals with {v1} on the {v2} chart.".format(v1=self.TradingPair,v2=self.TimeFrame))

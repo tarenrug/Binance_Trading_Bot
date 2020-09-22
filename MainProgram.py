@@ -35,7 +35,7 @@ if __name__=="__main__":
 
     count=0
     for pairing in Symbols.FavouriteSymbols:
-    #for pairing in ["BCCBTC"]:
+    #for pairing in ["BTCUSDT"]:
         Symbol=pairing
         Timeframe=client.KLINE_INTERVAL_1DAY
         Datapoints=270
@@ -82,21 +82,25 @@ if __name__=="__main__":
             if BuyVariable==1 and  LiveTrades==1:
                 for i in key:
                     if i==Symbol[:len(i)]:
-                        print("hi")
-                        print(ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
-                        print(float(client.get_symbol_info(symbol=Symbol)['filters'][2]['stepSize']))
+                        print("Buy Order Placed")
                         try:
                             order = client.create_test_order(symbol=Symbol,side=Client.SIDE_BUY,type=client.ORDER_TYPE_MARKET,quantity=ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
+                            print("Quantity being bought: "+ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
                         except:
                             order = client.create_test_order(symbol=Symbol,side=Client.SIDE_BUY,type=client.ORDER_TYPE_MARKET,quantity=1000*float(client.get_symbol_info(symbol=Symbol)['filters'][2]['stepSize']))
-                        print(Symbol[:len(i)])
+                            print("Quantity being bought: "+1000*float(client.get_symbol_info(symbol=Symbol)['filters'][2]['stepSize']))
                         print(order)
             if SellVarible == 1 and LiveTrades==1:
                 for i in key:
                     if i==Symbol[:len(i)]:
-                        order = client.create_test_order(symbol=Symbol,side=Client.SIDE_Sell,type=client.ORDER_TYPE_MARKET,quantity=ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
-                        print(Symbol[:len(i)])
-                print(order)
+                        print("Sell Order Placed")
+                        try:
+                            order = client.create_test_order(symbol=Symbol,side=Client.SIDE_SELL,type=client.ORDER_TYPE_MARKET,quantity=ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
+                            print("Quantity being sold: "+ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
+                        except:
+                            order = client.create_test_order(symbol=Symbol,side=Client.SIDE_SELL,type=client.ORDER_TYPE_MARKET,quantity=1000*float(client.get_symbol_info(symbol=Symbol)['filters'][2]['stepSize']))
+                            print("Quantity being sold: "+1000*float(client.get_symbol_info(symbol=Symbol)['filters'][2]['stepSize']))
+                        print(order)
             count+=1
 
     if count==0:
