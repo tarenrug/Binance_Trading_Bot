@@ -31,7 +31,7 @@ if __name__=="__main__":
             key.append(info['balances'][i]['asset'])
             values.append(float(info['balances'][i]['free']))
     AccountBalance = {key[j]: values[j] for j in range(len(key))}
-    print(AccountBalance)
+    #print(AccountBalance)
 
     count=0
     for pairing in Symbols.FavouriteSymbols:
