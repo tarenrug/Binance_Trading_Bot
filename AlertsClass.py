@@ -12,10 +12,10 @@ class Alerts:
 
     def Buy(self):
         variablebuy=1
-        if self.RSI <= 20 and self.StochRSIK <= 20 and self.MoneyFlow <= 20:
+        if self.RSI <= 90 and self.StochRSIK <= 90 and self.MoneyFlow <= 90:
             print("There is an BUY Signal with {v1} on the {v2} chart.".format(v1=self.TradingPair,v2=self.TimeFrame))
         else:
-            print("There are no buy signals with {v1} on the {v2} chart.".format(v1=self.TradingPair,v2=self.TimeFrame))
+            #print("There are no buy signals with {v1} on the {v2} chart.".format(v1=self.TradingPair,v2=self.TimeFrame))
             variablebuy=2
         return variablebuy
 
@@ -32,8 +32,8 @@ if __name__=="__main__":
     client=Client(Keys.APIKey,Keys.SecretKey)
     BTCUSDT = Alerts("BTCUSDT",client.KLINE_INTERVAL_1DAY,11,22,33,44)
 
-    taren=["ABC","DEF","HIJ"]
-    for i in taren:
+    list1=["ABC","DEF","HIJ"]
+    for i in list1:
         Alert = Alerts(i,client.KLINE_INTERVAL_1DAY,11,22,33,44)
         Alert.Buy()
 

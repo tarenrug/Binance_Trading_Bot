@@ -11,6 +11,10 @@ from AlertsClass import Alerts
 import ExtraUsefulCode
 
 if __name__=="__main__":
+    
+    LiveTrades=1
+    #LiveTrades: OFF = 0 or ON = 1
+    #change line 89 and 91 to create_order (also be careful with the except condition - line 91 - this will execute an order of 1000*(stepSize))
 
     tic=time.perf_counter()
 
@@ -18,6 +22,17 @@ if __name__=="__main__":
     print("")
 
     client = Client(Keys.APIKey,Keys.SecretKey)
+
+    info = client.get_account()
+    key=[]
+    values=[]
+    for i in range(len(info['balances'])):
+        if float(info['balances'][i]['free']) > 0:
+            key.append(info['balances'][i]['asset'])
+            values.append(float(info['balances'][i]['free']))
+    AccountBalance = {key[j]: values[j] for j in range(len(key))}
+    print(AccountBalance)
+
     count=0
     for pairing in Symbols.FavouriteSymbols:
     #for pairing in ["BCCBTC"]:
@@ -52,7 +67,10 @@ if __name__=="__main__":
         MoneyFlow = MoneyFlowCalc(MFLength,Datapoints,HighPriceVector,LowPriceVector,ClosePriceVector,VolumeVector)
 
         Alert = Alerts(pairing,Timeframe,RSI,StochRSIK,StochRSID,MoneyFlow)
-        if Alert.Buy() == 1 or Alert.Sell() == 1:
+        BuyVariable = Alert.Buy()
+        SellVarible = Alert.Sell()
+
+        if BuyVariable == 1 or SellVarible == 1:
             print("For {Tradingpair} at time interval of {Timeinterval}".format(Tradingpair=Symbol, Timeinterval=Timeframe))
             print("Price = "+str(ClosePriceVector[-1]))
             print("RSI = "+str(RSI))
@@ -61,8 +79,26 @@ if __name__=="__main__":
             print("Money Flow = "+str(MoneyFlow))
             print("Time = "+str(TimeVector[-1]))
             print("")
+            if BuyVariable==1 and  LiveTrades==1:
+                for i in key:
+                    if i==Symbol[:len(i)]:
+                        print("hi")
+                        print(ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
+                        print(float(client.get_symbol_info(symbol=Symbol)['filters'][2]['stepSize']))
+                        try:
+                            order = client.create_test_order(symbol=Symbol,side=Client.SIDE_BUY,type=client.ORDER_TYPE_MARKET,quantity=ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
+                        except:
+                            order = client.create_test_order(symbol=Symbol,side=Client.SIDE_BUY,type=client.ORDER_TYPE_MARKET,quantity=1000*float(client.get_symbol_info(symbol=Symbol)['filters'][2]['stepSize']))
+                        print(Symbol[:len(i)])
+                        print(order)
+            if SellVarible == 1 and LiveTrades==1:
+                for i in key:
+                    if i==Symbol[:len(i)]:
+                        order = client.create_test_order(symbol=Symbol,side=Client.SIDE_Sell,type=client.ORDER_TYPE_MARKET,quantity=ExtraUsefulCode.quantity(Symbol[:len(i)],Symbol,client))
+                        print(Symbol[:len(i)])
+                print(order)
             count+=1
-        
+
     if count==0:
         print("There are no Buy or Sell signals for the given set of parings.")
 
