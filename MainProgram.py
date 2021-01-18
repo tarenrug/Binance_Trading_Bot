@@ -12,7 +12,7 @@ import ExtraUsefulCode
 
 if __name__=="__main__":
     
-    LiveTrades=1
+    LiveTrades=0
     #LiveTrades: OFF = 0 or ON = 1
     #change line 89 and 91 to create_order (also be careful with the except condition - line 91 - this will execute an order of 1000*(stepSize))
 
