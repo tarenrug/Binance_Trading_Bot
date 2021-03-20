@@ -27,7 +27,7 @@ Twisted==20.3.0
 txaio==20.12.1
 tzlocal==2.1
 ujson==4.0.1
-urllib3==1.26.2
+urllib3==1.26.4
 zope.interface==5.2.0
 
 (pip install numpy and python-binance) python version 3.7.9
